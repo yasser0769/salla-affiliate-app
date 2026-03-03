@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>روابط التسويق بالعمولة | لوحة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --surface2: #1a1a24;
+      --border: #2a2a3a;
+      --accent: #FF9900;
+      --accent-dim: rgba(255,153,0,0.12);
+      --text: #f0f0f5;
+      --text-muted: #888899;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .stat-pill {
+      background: var(--accent-dim);
+      border: 1px solid rgba(255,153,0,0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ── Main ── */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* ── Add Form ── */
+    .add-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .add-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,153,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title span.icon {
+      font-size: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      direction: rtl;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    input::placeholder { color: var(--text-muted); }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 11px 24px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      background: var(--surface2);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover { color: var(--text); border-color: var(--text-muted); }
+
+    /* ── Search Bar ── */
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .search-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding-right: 40px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    /* ── Table ── */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 120px 1fr 200px 100px 80px;
+      gap: 16px;
+      padding: 12px 20px;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .link-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 200px 100px 80px;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      transition: background 0.15s;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .link-row:last-child { border-bottom: none; }
+    .link-row:hover { background: var(--surface2); }
+
+    .product-id-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-family: monospace;
+      color: var(--text-muted);
+    }
+
+    .link-url {
+      font-size: 13px;
+      color: var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-text {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .toggle {
+      position: relative;
+      width: 42px;
+      height: 24px;
+    }
+
+    .toggle input { display: none; }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      right: 3px;
+      transition: 0.25s;
+    }
+
+    .toggle input:checked + .toggle-slider { background: var(--success); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(-18px); }
+
+    .row-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+
+    .icon-btn.edit { background: rgba(99,102,241,0.15); color: #818cf8; }
+    .icon-btn.del { background: rgba(239,68,68,0.1); color: var(--danger); }
+    .icon-btn:hover { transform: scale(1.1); }
+
+    /* ── Empty State ── */
+    .empty {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+    }
+
+    .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+    .empty h3 { font-size: 16px; margin-bottom: 6px; color: var(--text); }
+    .empty p { font-size: 13px; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.success { border-color: var(--success); color: var(--success); }
+    .toast.error { border-color: var(--danger); color: var(--danger); }
+
+    /* ── Preview ── */
+    .preview-section {
+      margin-top: 40px;
+    }
+
+    .preview-card {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .preview-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .preview-mockup {
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .mock-cart-btn {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a24;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 10px;
+      font-family: inherit;
+    }
+
+    .preview-affiliate-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+      transition: filter 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .preview-affiliate-btn:hover { filter: brightness(1.1); }
+
+    .preview-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .table-header, .link-row {
+        grid-template-columns: 90px 1fr 90px;
+      }
+      .table-header > *:nth-child(3),
+      .link-row > *:nth-child(3),
+      .table-header > *:nth-child(4),
+      .link-row > *:nth-child(4) { display: none; }
+      .header-stats { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🔗</div>
+    <div>
+      <div class="logo-text">روابط العمولة</div>
+      <div class="logo-sub">Affiliate Button App</div>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat-pill" id="totalCount">0 منتج</div>
+    <div class="stat-pill" id="activeCount" style="background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2);color:#22c55e">0 مفعّل</div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Add Form -->
+  <div class="add-card">
+    <div class="card-title">
+      <span class="icon">➕</span>
+      إضافة رابط عمولة لمنتج
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>ID المنتج في سلة</label>
+        <input type="text" id="productId" placeholder="مثال: 207865447" />
+      </div>
+
+      <div class="form-group">
+        <label>نص الزر</label>
+        <input type="text" id="buttonText" placeholder="اشترِ من أمازون" value="اشترِ من أمازون" />
+      </div>
+
+      <div class="form-group full">
+        <label>رابط المنتج (مع كود العمولة)</label>
+        <input type="url" id="affiliateUrl" placeholder="https://amzn.to/xxxxxxx" dir="ltr" />
+      </div>
+
+      <div class="form-group">
+        <label>لون الزر</label>
+        <select id="buttonColor">
+          <option value="#FF9900">🟠 أمازون (برتقالي)</option>
+          <option value="#E50914">🔴 نون (أحمر)</option>
+          <option value="#E43225">🔴 علي اكسبريس (أحمر)</option>
+          <option value="#0F8B5A">🟢 أخضر مخصص</option>
+          <option value="#1A73E8">🔵 أزرق مخصص</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="justify-content:flex-end">
+        <label>&nbsp;</label>
+        <div class="form-actions" style="margin:0">
+          <button class="btn btn-ghost" onclick="clearForm()">مسح</button>
+          <button class="btn btn-primary" onclick="saveLink()">
+            💾 حفظ الرابط
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="ابحث بـ ID المنتج أو نص الزر..." oninput="renderTable()" />
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <div>ID المنتج</div>
+      <div>رابط العمولة</div>
+      <div>نص الزر</div>
+      <div>الحالة</div>
+      <div></div>
+    </div>
+    <div id="linksBody"></div>
+  </div>
+
+  <!-- Preview -->
+  <div class="preview-section">
+    <div class="preview-label">معاينة الزر في المتجر</div>
+    <div class="preview-card">
+      <div class="preview-mockup">
+        <div class="mock-cart-btn">🛒 أضف للسلة</div>
+        <button class="preview-affiliate-btn" id="previewBtn">
+          🔗 <span id="previewText">اشترِ من أمازون</span>
+        </button>
+        <div class="preview-note">سيتم فتح رابط خارجي</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ===================================================
+  // بيانات وهمية للعرض (تُستبدل بـ API حقيقي)
+  // ===================================================
+
+  // في التطبيق الحقيقي: هذا يأتي من URL params
+  const MERCHANT_ID = new URLSearchParams(location.search).get('merchant_id') || 'demo_merchant';
+  const SERVER_URL = 'https://your-app.onrender.com'; // ← عدّله بعد النشر
+
+  let links = []; // قائمة الروابط المحفوظة
+  let editingId = null; // ID المنتج الذي يتم تعديله
+
+  // ===================================================
+  // تحميل البيانات
+  // ===================================================
+  async function loadLinks() {
+    try {
+      // في التجربة المحلية: نستخدم localStorage
+      const saved = localStorage.getItem(`links_${MERCHANT_ID}`);
+      links = saved ? JSON.parse(saved) : getDemoData();
+    } catch {
+      links = getDemoData();
+    }
+    renderTable();
+    updateStats();
+  }
+
+  function getDemoData() {
+    return [
+      { productId: '207865447', url: 'https://amzn.to/example1', buttonText: 'اشترِ من أمازون', buttonColor: '#FF9900', enabled: true },
+      { productId: '198734521', url: 'https://amzn.to/example2', buttonText: 'اشترِ من أمازون', buttonColor: '#FF9900', enabled: false },
+    ];
+  }
+
+  // ===================================================
+  // حفظ رابط
+  // ===================================================
+  function saveLink() {
+    const productId = document.getElementById('productId').value.trim();
+    const url = document.getElementById('affiliateUrl').value.trim();
+    const buttonText = document.getElementById('buttonText').value.trim() || 'اشترِ من أمازون';
+    const buttonColor = document.getElementById('buttonColor').value;
+
+    if (!productId) return showToast('❌ أدخل ID المنتج', 'error');
+    if (!url) return showToast('❌ أدخل رابط العمولة', 'error');
+
+    try { new URL(url); } catch { return showToast('❌ الرابط غير صحيح', 'error'); }
+
+    const existing = links.findIndex(l => l.productId === productId);
+    const linkData = { productId, url, buttonText, buttonColor, enabled: true };
+
+    if (existing >= 0) {
+      links[existing] = linkData;
+      showToast('✅ تم التحديث بنجاح', 'success');
+    } else {
+      links.unshift(linkData);
+      showToast('✅ تم الحفظ بنجاح', 'success');
+    }
+
+    saveToStorage();
+    renderTable();
+    updateStats();
+    clearForm();
+  }
+
+  // ===================================================
+  // حذف رابط
+  // ===================================================
+  function deleteLink(productId) {
+    if (!confirm(`هل تريد حذف رابط المنتج ${productId}؟`)) return;
+    links = links.filter(l => l.productId !== productId);
+    saveToStorage();
+    renderTable();
+    updateStats();
+    showToast('🗑️ تم الحذف', 'success');
+  }
+
+  // ===================================================
+  // تعديل رابط
+  // ===================================================
+  function editLink(productId) {
+    const link = links.find(l => l.productId === productId);
+    if (!link) return;
+    document.getElementById('productId').value = link.productId;
+    document.getElementById('affiliateUrl').value = link.url;
+    document.getElementById('buttonText').value = link.buttonText;
+    document.getElementById('buttonColor').value = link.buttonColor;
+    document.querySelector('.add-card').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('productId').focus();
+  }
+
+  // ===================================================
+  // تفعيل/إيقاف
+  // ===================================================
+  function toggleLink(productId) {
+    const link = links.find(l => l.productId === productId);
+    if (link) {
+      link.enabled = !link.enabled;
+      saveToStorage();
+      updateStats();
+    }
+  }
+
+  // ===================================================
+  // عرض الجدول
+  // ===================================================
+  function renderTable() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = links.filter(l =>
+      l.productId.includes(search) ||
+      l.buttonText.toLowerCase().includes(search)
+    );
+
+    const body = document.getElementById('linksBody');
+
+    if (filtered.length === 0) {
+      body.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">🔗</div>
+          <h3>${search ? 'لا توجد نتائج' : 'لا توجد روابط بعد'}</h3>
+          <p>${search ? 'جرّب بحثاً مختلفاً' : 'أضف أول رابط عمولة لمنتجاتك'}</p>
+        </div>
+      `;
+      return;
+    }
+
+    body.innerHTML = filtered.map(link => `
+      <div class="link-row">
+        <div>
+          <span class="product-id-badge">${link.productId}</span>
+        </div>
+        <div>
+          <div class="link-url" title="${link.url}">${link.url}</div>
+        </div>
+        <div>
+          <span class="btn-text" style="color:${link.buttonColor}">${link.buttonText}</span>
+        </div>
+        <div>
+          <label class="toggle">
+            <input type="checkbox" ${link.enabled ? 'checked' : ''} 
+              onchange="toggleLink('${link.productId}')">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="row-actions">
+          <button class="icon-btn edit" onclick="editLink('${link.productId}')" title="تعديل">✏️</button>
+          <button class="icon-btn del" onclick="deleteLink('${link.productId}')" title="حذف">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===================================================
+  // إحصائيات
+  // ===================================================
+  function updateStats() {
+    document.getElementById('totalCount').textContent = `${links.length} منتج`;
+    document.getElementById('activeCount').textContent = `${links.filter(l => l.enabled).length} مفعّل`;
+  }
+
+  // ===================================================
+  // معاينة مباشرة
+  // ===================================================
+  document.getElementById('buttonText').addEventListener('input', function() {
+    document.getElementById('previewText').textContent = this.value || 'اشترِ من أمازون';
+  });
+
+  document.getElementById('buttonColor').addEventListener('change', function() {
+    document.getElementById('previewBtn').style.background = this.value;
+  });
+
+  // ===================================================
+  // أدوات مساعدة
+  // ===================================================
+  function clearForm() {
+    ['productId', 'affiliateUrl'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('buttonText').value = 'اشترِ من أمازون';
+    document.getElementById('buttonColor').value = '#FF9900';
+  }
+
+  function saveToStorage() {
+    localStorage.setItem(`links_${MERCHANT_ID}`, JSON.stringify(links));
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.className = 'toast', 3000);
+  }
+
+  // ===================================================
+  // تشغيل
+  // ===================================================
+  loadLinks();
+</script>
+
+</body>
+</html>
